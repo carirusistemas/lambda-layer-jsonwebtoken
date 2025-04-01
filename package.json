@@ -4,4 +4,4 @@
   "dependencies": {
     "jsonwebtoken": "^9.0.2"
   }
-}# lambda-layer-jsonwebtoken
+}
