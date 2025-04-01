@@ -1,0 +1,25 @@
+name: Build Lambda Layer
+on:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Install jsonwebtoken
+        run: |
+          mkdir -p nodejs
+          npm install jsonwebtoken
+          mv node_modules nodejs/
+      - name: Zip Layer
+        run: zip -r jsonwebtoken-layer.zip nodejs
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: jsonwebtoken-layer
+          path: jsonwebtoken-layer.zip
