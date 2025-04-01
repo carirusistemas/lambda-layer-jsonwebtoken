@@ -6,11 +6,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '18'
       - name: Install jsonwebtoken
         run: |
           mkdir -p nodejs
@@ -18,8 +18,12 @@ jobs:
           mv node_modules nodejs/
       - name: Zip Layer
         run: zip -r jsonwebtoken-layer.zip nodejs
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: jsonwebtoken-layer
-          path: jsonwebtoken-layer.zip
+      - name: Commit ZIP to Repository
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add jsonwebtoken-layer.zip
+          git commit -m "Add jsonwebtoken-layer.zip"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
