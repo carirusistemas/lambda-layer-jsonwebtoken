@@ -12,24 +12,27 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Alinhado com Node.js 20.x
-      - name: Install jsonwebtoken
+          node-version: '20' # Compatível com Node.js 20.x
+      - name: Install jsonwebtoken and Verify
         run: |
           mkdir -p nodejs
           cd nodejs
           npm init -y
           npm install jsonwebtoken
-          ls -la node_modules/jsonwebtoken # Verifica se foi instalado
+          echo "Verificando estrutura:"
+          ls -la node_modules/jsonwebtoken # Confirma que o módulo foi instalado
       - name: Zip Layer
         run: |
           cd nodejs
           zip -r ../jsonwebtoken-layer.zip .
+          echo "Conteúdo do ZIP:"
+          unzip -l ../jsonwebtoken-layer.zip # Lista o conteúdo do ZIP
       - name: Commit ZIP to Repository
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
           git add jsonwebtoken-layer.zip
-          git commit -m "Add jsonwebtoken-layer.zip with correct structure"
+          git commit -m "Add jsonwebtoken-layer.zip with verified structure"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
