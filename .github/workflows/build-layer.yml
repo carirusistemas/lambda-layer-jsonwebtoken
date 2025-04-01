@@ -3,7 +3,7 @@ on:
   push:
     branches: [main]
 permissions:
-  contents: write  # Adiciona permissão de escrita no repositório
+  contents: write
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,11 +15,12 @@ jobs:
           node-version: '18'
       - name: Install jsonwebtoken
         run: |
-          mkdir -p nodejs
-          npm install jsonwebtoken
-          mv node_modules nodejs/
+          mkdir -p nodejs/node_modules
+          npm install jsonwebtoken --prefix nodejs
       - name: Zip Layer
-        run: zip -r jsonwebtoken-layer.zip nodejs
+        run: |
+          cd nodejs
+          zip -r ../jsonwebtoken-layer.zip .
       - name: Commit ZIP to Repository
         run: |
           git config --global user.name "GitHub Action"
