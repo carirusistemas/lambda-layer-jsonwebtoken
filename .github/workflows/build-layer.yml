@@ -2,6 +2,8 @@ name: Build Lambda Layer
 on:
   push:
     branches: [main]
+permissions:
+  contents: write  # Adiciona permissão de escrita no repositório
 jobs:
   build:
     runs-on: ubuntu-latest
